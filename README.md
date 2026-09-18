@@ -1,19 +1,13 @@
-# SDLC Security Engine for Non-Human Identities & AI Agent CI/CD Auditing.
+# SDLC Security Engine for Non-Human Identities & AI Agent CI/CD Auditing
 
-A lightweight security CLI that audits a repository for **agent/bot identity risk**
-and **CI supply-chain tampering**. It looks in two places:
+A lightweight security CLI that audits a repository for **agent/bot identity risk** and **CI supply-chain tampering**. It inspects two surfaces:
 
-1. **Workflow definitions** (`src/agent_guard/scanner.py`) — parses
-   `.github/workflows/*.yml` with PyYAML and applies least-privilege checks.
-2. **Git history** (`src/agent_guard/agent_audit.py`) — uses GitPython to find
-   automated identities that rewrote pipeline files.
+1. **Workflow definitions** (`src/agent_guard/scanner.py`) — parses `.github/workflows/*.yml` with PyYAML and applies least-privilege checks.
+2. **Git history** (`src/agent_guard/agent_audit.py`) — uses GitPython to detect automated identities altering pipeline configurations.
 
-## Install
+---
 
-```bash
-uv sync
-```
-##  Features
+## ⚡ Features
 
 * **Ambient Token Over-Privilege Detection:** 
   * Identifies workflows missing explicit top-level `permissions` definitions (defaulting to broad read/write tokens).
@@ -27,16 +21,21 @@ uv sync
   * Handles YAML 1.1 boolean parsing quirks (where `on:` parses natively as boolean `True`).
   * Coerces dynamic Git actor signatures safely to prevent runtime type exceptions.
   * Formatted output using `rich` with color-coded severity tables and explicit rule-reference legends.
-  * 
-## Usage
+
+---
+
+## 🚀 Quickstart & Usage
+
+Ensure you have [uv](https://github.com/astral-sh/uv) installed.
 
 ```bash
-agent-identity-guard audit --path <repo_path>
-```
+# Clone & install dependencies
+git clone [https://github.com/Palak-Pathak/agent-identity-guard.git](https://github.com/Palak-Pathak/agent-identity-guard.git)
+cd agent-identity-guard
+uv sync
 
-`--path` defaults to the current directory. The summary table is color-coded
-(CRITICAL red, HIGH yellow). The command exits with status `1` when at least one
-CRITICAL finding is reported, so it can gate a pipeline; `0` otherwise.
+# Run audit on target repository
+uv run agent-identity-guard audit --path <repo_path>
 
 ## Rules
 
