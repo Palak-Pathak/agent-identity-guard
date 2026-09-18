@@ -1,4 +1,4 @@
-# agent-identity-guard
+# SDLC Security Engine for Non-Human Identities & AI Agent CI/CD Auditing.
 
 A lightweight security CLI that audits a repository for **agent/bot identity risk**
 and **CI supply-chain tampering**. It looks in two places:
@@ -13,7 +13,21 @@ and **CI supply-chain tampering**. It looks in two places:
 ```bash
 uv sync
 ```
+##  Features
 
+* **Ambient Token Over-Privilege Detection:** 
+  * Identifies workflows missing explicit top-level `permissions` definitions (defaulting to broad read/write tokens).
+  * Flags dangerous `permissions: write-all` declarations at both global and job-level scopes.
+* **Poisoned Pipeline Protection:** 
+  * Flags high-risk triggers like `pull_request_target` that can expose repository secrets to untrusted forks.
+* **Non-Human Identity (NHI) Behavioral Auditing:** 
+  * Scans Git commit history to detect automated agents and service bots (`[bot]`, `github-actions`, `copilot`, `cursor`, `dependabot`, etc.).
+  * Catches unauthorized pipeline tampering where an automated identity modifies files inside `.github/workflows/`.
+* **Edge-Case Parsing & Resilience:**
+  * Handles YAML 1.1 boolean parsing quirks (where `on:` parses natively as boolean `True`).
+  * Coerces dynamic Git actor signatures safely to prevent runtime type exceptions.
+  * Formatted output using `rich` with color-coded severity tables and explicit rule-reference legends.
+  * 
 ## Usage
 
 ```bash
